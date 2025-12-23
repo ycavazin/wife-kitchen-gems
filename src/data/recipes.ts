@@ -10,27 +10,52 @@ export interface Recipe {
 // URL of the published CSV
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJCWty_FsIZKQ7gSjjjSSUKFAuq-IAs82-HyPxlZ3z6uTVkme4JGMMh4Vtr2g8hWd9gRCVCmCKRP_e/pub?output=csv';
 
-// Simple CSV parser that handles quoted fields
+// Simple CSV parser that handles quoted fields and newlines
 function parseCSV(csv: string): string[][] {
-  const lines = csv.split('\n').filter(line => line.trim());
-  return lines.map(line => {
-    const result: string[] = [];
-    let current = '';
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === ',' && !inQuotes) {
-        result.push(current);
-        current = '';
+  const result: string[][] = [];
+  let row: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  let i = 0;
+
+  while (i < csv.length) {
+    const char = csv[i];
+    if (char === '"') {
+      if (inQuotes && csv[i + 1] === '"') {
+        // Escaped quote
+        current += '"';
+        i += 2;
+        continue;
       } else {
-        current += char;
+        inQuotes = !inQuotes;
       }
+    } else if (char === ',' && !inQuotes) {
+      row.push(current);
+      current = '';
+    } else if ((char === '\n' || char === '\r') && !inQuotes) {
+      if (current || row.length > 0) {
+        row.push(current);
+        result.push(row);
+        row = [];
+        current = '';
+      }
+      // Skip \r\n
+      if (char === '\r' && csv[i + 1] === '\n') {
+        i++;
+      }
+    } else {
+      current += char;
     }
-    result.push(current);
-    return result;
-  });
+    i++;
+  }
+
+  // Add last field and row
+  if (current || row.length > 0) {
+    row.push(current);
+    result.push(row);
+  }
+
+  return result;
 }
 
 export async function fetchRecipes(): Promise<Recipe[]> {
