@@ -24,7 +24,6 @@ const RecipeCard = ({ recipe, onClick }: RecipeCardProps) => {
             src={imageUrl}
             alt={recipe.nome}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 z-20"
-            loading="lazy"
             onError={(e) => {
               // Hide image on error and show fallback
               e.currentTarget.style.display = 'none';
