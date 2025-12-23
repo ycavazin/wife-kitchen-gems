@@ -59,16 +59,21 @@ function parseCSV(csv: string): string[][] {
 }
 
 export async function fetchRecipes(): Promise<Recipe[]> {
+  console.log('Starting to fetch recipes');
   try {
     const response = await fetch(CSV_URL);
+    console.log('Fetch response ok:', response.ok);
     if (!response.ok) {
       throw new Error('Failed to fetch recipes');
     }
     const csvText = await response.text();
+    console.log('CSV text length:', csvText.length);
     const data = parseCSV(csvText);
+    console.log('Parsed data rows:', data.length);
     
     // Skip header row
     const dataLines = data.slice(1);
+    console.log('Data lines:', dataLines.length);
     
     return dataLines.map((line, index) => {
       const [nome, categoria, ingredientes, modoPreparo, fotoUrl, fotoImgur] = line;
@@ -77,7 +82,14 @@ export async function fetchRecipes(): Promise<Recipe[]> {
         imageUrl = getGoogleDriveImageUrl(fotoUrl?.trim());
       }
       console.log('Recipe:', nome?.trim(), 'Image URL:', imageUrl);
-      console.log('Recipe:', nome?.trim(), 'Image URL:', imageUrl);
+      return {
+        id: (index + 1).toString(),
+        nome: nome?.trim() || '',
+        categoria: categoria?.trim() || '',
+        ingredientes: ingredientes?.trim() || '',
+        modoPreparo: modoPreparo?.trim() || '',
+        fotoUrl: imageUrl
+      };
     });
   } catch (error) {
     console.error('Error fetching recipes:', error);
