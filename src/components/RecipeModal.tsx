@@ -2,6 +2,7 @@ import { ChefHat } from "lucide-react";
 import { Recipe } from "@/data/recipes";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getGoogleDriveImageUrl } from "@/lib/utils/driveImage";
 
 interface RecipeModalProps {
   recipe: Recipe | null;
@@ -12,12 +13,24 @@ interface RecipeModalProps {
 const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
   if (!recipe) return null;
 
+  const imageUrl = getGoogleDriveImageUrl(recipe.fotoUrl);
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] p-0 overflow-hidden bg-card">
+      <DialogContent className="max-w-2xl max-h-[90vh] p-0 overflow-hidden bg-card" aria-describedby={undefined}>
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            <div className="aspect-video bg-muted relative">
+            <div className="aspect-video bg-muted relative overflow-hidden">
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={recipe.nome}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              ) : null}
               <div className="absolute inset-0 bg-sage/30 flex items-center justify-center">
                 <ChefHat className="w-16 h-16 text-foreground/20" />
               </div>
