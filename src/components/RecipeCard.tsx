@@ -15,7 +15,7 @@ const RecipeCard = ({ recipe, onClick }: RecipeCardProps) => {
   return (
     <article
       onClick={onClick}
-      className="recipe-card cursor-pointer group"
+      className="recipe-card cursor-pointer group flex flex-col"
     >
       <div className="p-5">
         <span className="bg-card/90 backdrop-blur-sm text-foreground text-xs font-medium px-2.5 py-1 rounded-full mb-3 inline-block">
