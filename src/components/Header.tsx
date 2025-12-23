@@ -7,7 +7,7 @@ const Header = () => {
         <div className="flex items-center justify-center gap-3">
           <ChefHat className="w-8 h-8 text-primary" />
           <h1 className="font-display text-2xl font-semibold text-foreground">
-            Receitas Família Serillo
+            Receitas do caderninho da Juzinha
           </h1>
         </div>
       </div>

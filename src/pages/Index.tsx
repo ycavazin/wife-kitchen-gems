@@ -64,7 +64,7 @@ const Index = () => {
       <footer className="bg-card border-t border-border py-8 mt-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-muted-foreground text-sm">
-            Feito com amor para a Família Serillo ❤️
+            Feito com amor para a Juzinha ❤️
           </p>
         </div>
       </footer>
