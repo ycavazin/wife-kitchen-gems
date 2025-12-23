@@ -19,12 +19,12 @@ const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
       <DialogContent className="max-w-2xl max-h-[90vh] p-0 overflow-hidden bg-card" aria-describedby={undefined}>
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            <div className="aspect-video bg-muted relative overflow-hidden">
+            <div className="bg-muted relative overflow-hidden">
               {imageUrl ? (
                 <img
                   src={imageUrl}
                   alt={recipe.nome}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="w-full h-auto object-contain"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}

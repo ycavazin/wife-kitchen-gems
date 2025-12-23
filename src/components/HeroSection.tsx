@@ -3,7 +3,7 @@ const HeroSection = () => {
     <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
       <div 
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url('https://drive.google.com/uc?export=view&id=17HjNapTpv-PB6wf5cBtbTI9mH5NzkFyx')` }}
+        style={{ backgroundImage: `url('https://raw.githubusercontent.com/ycavazin/wife-kitchen-gems/main/pics/capa-icone.png')` }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
       </div>
