@@ -14,19 +14,3 @@ export function getGoogleDriveImageUrl(driveUrl: string | undefined): string | n
   
   return null;
 }
-
-/**
- * Converts an Imgur page URL to a direct image URL
- * From: https://imgur.com/IMAGE_ID or https://i.imgur.com/IMAGE_ID
- * To: https://i.imgur.com/IMAGE_ID
- */
-export function getImgurImageUrl(imgurUrl: string | undefined): string | null {
-  if (!imgurUrl) return null;
-  
-  const match = imgurUrl.match(/(i\.)?imgur\.com\/([a-zA-Z0-9]+)/);
-  if (match && match[2]) {
-    return `https://i.imgur.com/${match[2]}`;
-  }
-  
-  return null;
-}

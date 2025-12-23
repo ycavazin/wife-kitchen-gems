@@ -10,7 +10,7 @@ export interface Recipe {
 // URL of the published CSV
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJCWty_FsIZKQ7gSjjjSSUKFAuq-IAs82-HyPxlZ3z6uTVkme4JGMMh4Vtr2g8hWd9gRCVCmCKRP_e/pub?output=csv';
 
-import { getGoogleDriveImageUrl, getImgurImageUrl } from "@/lib/utils/driveImage";
+import { getGoogleDriveImageUrl } from "@/lib/utils/driveImage";
 function parseCSV(csv: string): string[][] {
   const result: string[][] = [];
   let row: string[] = [];
@@ -82,8 +82,8 @@ export async function fetchRecipes(): Promise<Recipe[]> {
     console.log('Data lines:', dataLines.length);
     
     return dataLines.map((line, index) => {
-      const [nome, categoria, ingredientes, modoPreparo, fotoUrl, fotoImgur] = line;
-      const imageUrl = generateImageUrl(nome);
+      const [nome, categoria, ingredientes, modoPreparo, fotoUrl, fotoImgur, fotoGithub] = line;
+      const imageUrl = fotoGithub?.trim() || null;
       console.log('Recipe:', nome?.trim(), 'Image URL:', imageUrl);
       return {
         id: (index + 1).toString(),
