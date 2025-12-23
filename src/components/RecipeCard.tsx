@@ -6,6 +6,10 @@ interface RecipeCardProps {
 }
 
 const RecipeCard = ({ recipe, onClick }: RecipeCardProps) => {
+  if (!recipe || !recipe.nome) {
+    return null;
+  }
+
   return (
     <article
       onClick={onClick}
@@ -32,7 +36,7 @@ const RecipeCard = ({ recipe, onClick }: RecipeCardProps) => {
           {recipe.nome}
         </h3>
         <p className="text-muted-foreground text-sm line-clamp-2">
-          {recipe.modoPreparo.substring(0, 100)}...
+          {recipe.modoPreparo?.substring(0, 100) || ''}...
         </p>
       </div>
     </article>
