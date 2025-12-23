@@ -1,5 +1,8 @@
-import { ChefHat, Expand } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ChefHat, Expand, Minimize, Share } from "lucide-react";
 import { Recipe } from "@/data/recipes";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -10,32 +13,57 @@ interface RecipeModalProps {
 }
 
 const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
+  const [expanded, setExpanded] = useState(false);
+
   if (!recipe) return null;
 
   const imageUrl = recipe.fotoUrl;
+
+  const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/?recipe=${recipe.id}`;
+    const shareData = {
+      title: recipe.nome,
+      text: `Confira esta receita: ${recipe.nome}`,
+      url: shareUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        toast("Link da receita copiado para a área de transferência!");
+      }
+    } catch (err) {
+      console.error("Erro ao compartilhar:", err);
+      toast("Não foi possível compartilhar a receita.", {
+        description: "Ocorreu um erro. Tente novamente mais tarde.",
+      });
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] p-0 overflow-hidden bg-card" aria-describedby={undefined}>
         <ScrollArea className="max-h-[90vh]">
           <div className="relative">
-            <div className="bg-muted relative overflow-hidden">
+            <div className={`bg-muted relative ${expanded ? '' : 'overflow-hidden'}`}>
               {imageUrl ? (
                 <>
                   <img
                     src={imageUrl}
                     alt={recipe.nome}
-                    className="w-full h-auto object-contain"
+                    className={`w-full h-auto ${expanded ? 'object-none' : 'object-contain'}`}
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
                   <button
-                    onClick={() => window.open(imageUrl, '_blank')}
+                    onClick={() => setExpanded(!expanded)}
                     className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-                    title="Expandir imagem"
+                    title={expanded ? "Reduzir imagem" : "Expandir imagem"}
                   >
-                    <Expand className="w-5 h-5" />
+                    {expanded ? <Minimize className="w-5 h-5" /> : <Expand className="w-5 h-5" />}
                   </button>
                 </>
               ) : (
@@ -51,10 +79,13 @@ const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
               {recipe.categoria}
             </span>
             
-            <DialogHeader className="mt-4">
+            <DialogHeader className="mt-4 flex flex-row items-center justify-between">
               <DialogTitle className="font-display text-3xl font-semibold text-foreground">
                 {recipe.nome}
               </DialogTitle>
+              <Button variant="outline" size="icon" onClick={handleShare}>
+                <Share className="w-5 h-5" />
+              </Button>
             </DialogHeader>
             
             <div className="mt-6">

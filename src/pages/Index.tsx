@@ -13,9 +13,50 @@ const Index = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+    useEffect(() => {
     fetchRecipes().then(setRecipes).finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (recipes.length > 0) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const recipeId = urlParams.get('recipe');
+      if (recipeId) {
+        const recipeFromUrl = recipes.find(r => r.id === recipeId);
+        if (recipeFromUrl) {
+          setSelectedRecipe(recipeFromUrl);
+        }
+      }
+    }
+  }, [recipes]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const recipeId = urlParams.get('recipe');
+      const recipeFromUrl = recipes.find(r => r.id === recipeId);
+      setSelectedRecipe(recipeFromUrl || null);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [recipes]);
+
+  const handleSelectRecipe = (recipe: Recipe) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('recipe', recipe.id);
+    window.history.pushState({}, '', url);
+    setSelectedRecipe(recipe);
+  };
+
+  const handleCloseModal = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('recipe');
+    window.history.replaceState({}, '', url);
+    setSelectedRecipe(null);
+  };
 
   const filteredRecipes = useMemo(() => {
     return recipes.filter((recipe) => {
@@ -60,7 +101,7 @@ const Index = () => {
                 >
                   <RecipeCard
                     recipe={recipe}
-                    onClick={() => setSelectedRecipe(recipe)}
+                    onClick={() => handleSelectRecipe(recipe)}
                   />
                 </div>
               ))}
@@ -88,7 +129,7 @@ const Index = () => {
       <RecipeModal
         recipe={selectedRecipe}
         isOpen={!!selectedRecipe}
-        onClose={() => setSelectedRecipe(null)}
+        onClose={handleCloseModal}
       />
     </div>
   );
