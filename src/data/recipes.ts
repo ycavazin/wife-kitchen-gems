@@ -77,14 +77,7 @@ export async function fetchRecipes(): Promise<Recipe[]> {
         imageUrl = getGoogleDriveImageUrl(fotoUrl?.trim());
       }
       console.log('Recipe:', nome?.trim(), 'Image URL:', imageUrl);
-      return {
-        id: (index + 1).toString(),
-        nome: nome?.trim() || '',
-        categoria: categoria?.trim() || '',
-        ingredientes: ingredientes?.trim() || '',
-        modoPreparo: modoPreparo?.trim() || '',
-        fotoUrl: imageUrl
-      };
+      console.log('Recipe:', nome?.trim(), 'Image URL:', imageUrl);
     });
   } catch (error) {
     console.error('Error fetching recipes:', error);
