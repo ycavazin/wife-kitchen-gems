@@ -60,7 +60,7 @@ function parseCSV(csv: string): string[][] {
 
 // Generate image URL from recipe name
 function generateImageUrl(nome: string): string {
-  const sanitized = nome.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
+  const sanitized = nome.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
   return `https://raw.githubusercontent.com/ycavazin/wife-kitchen-gems/main/pics/${sanitized}.png`;
 }
 
