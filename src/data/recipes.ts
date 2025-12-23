@@ -58,6 +58,12 @@ function parseCSV(csv: string): string[][] {
   return result;
 }
 
+// Generate image URL from recipe name
+function generateImageUrl(nome: string): string {
+  const sanitized = nome.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
+  return `https://raw.githubusercontent.com/ycavazin/wife-kitchen-gems/main/pics/${sanitized}.png`;
+}
+
 export async function fetchRecipes(): Promise<Recipe[]> {
   console.log('Starting to fetch recipes');
   try {
@@ -77,7 +83,7 @@ export async function fetchRecipes(): Promise<Recipe[]> {
     
     return dataLines.map((line, index) => {
       const [nome, categoria, ingredientes, modoPreparo, fotoUrl, fotoImgur] = line;
-      const imageUrl = getImgurImageUrl(fotoImgur?.trim());
+      const imageUrl = generateImageUrl(nome);
       console.log('Recipe:', nome?.trim(), 'Image URL:', imageUrl);
       return {
         id: (index + 1).toString(),
