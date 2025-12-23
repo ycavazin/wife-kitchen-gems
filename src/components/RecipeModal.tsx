@@ -2,7 +2,6 @@ import { ChefHat } from "lucide-react";
 import { Recipe } from "@/data/recipes";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getGoogleDriveImageUrl } from "@/lib/utils/driveImage";
 
 interface RecipeModalProps {
   recipe: Recipe | null;
@@ -13,7 +12,7 @@ interface RecipeModalProps {
 const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
   if (!recipe) return null;
 
-  const imageUrl = getGoogleDriveImageUrl(recipe.fotoUrl);
+  const imageUrl = recipe.fotoUrl;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
