@@ -76,6 +76,7 @@ export async function fetchRecipes(): Promise<Recipe[]> {
       if (!imageUrl) {
         imageUrl = getGoogleDriveImageUrl(fotoUrl?.trim());
       }
+      console.log('Recipe:', nome?.trim(), 'Image URL:', imageUrl);
       return {
         id: (index + 1).toString(),
         nome: nome?.trim() || '',
