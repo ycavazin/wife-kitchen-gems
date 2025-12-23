@@ -12,20 +12,20 @@ const HeroSection = () => {
       
       <div className="relative z-10 container mx-auto px-4 py-16 text-center">
         <p className="text-primary font-medium mb-3 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          Made with Love
+          Feito com Amor
         </p>
         <h2 
           className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground mb-4 animate-fade-in"
           style={{ animationDelay: '0.2s' }}
         >
-          Family Recipes
+          Receitas de Família
         </h2>
         <p 
           className="text-lg text-muted-foreground max-w-xl mx-auto animate-fade-in"
           style={{ animationDelay: '0.3s' }}
         >
-          A collection of cherished recipes passed down through generations, 
-          each one telling a story of love, tradition, and delicious meals.
+          Uma coleção de receitas queridas passadas de geração em geração, 
+          cada uma contando uma história de amor, tradição e refeições deliciosas.
         </p>
       </div>
     </section>
