@@ -10,7 +10,7 @@ export interface Recipe {
 // URL of the published CSV
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTJCWty_FsIZKQ7gSjjjSSUKFAuq-IAs82-HyPxlZ3z6uTVkme4JGMMh4Vtr2g8hWd9gRCVCmCKRP_e/pub?output=csv';
 
-// Simple CSV parser that handles quoted fields and newlines
+import { getGoogleDriveImageUrl, getImgurImageUrl } from "@/lib/utils/driveImage";
 function parseCSV(csv: string): string[][] {
   const result: string[][] = [];
   let row: string[] = [];
@@ -71,14 +71,18 @@ export async function fetchRecipes(): Promise<Recipe[]> {
     const dataLines = data.slice(1);
     
     return dataLines.map((line, index) => {
-      const [nome, categoria, ingredientes, modoPreparo, fotoUrl] = line;
+      const [nome, categoria, ingredientes, modoPreparo, fotoUrl, fotoImgur] = line;
+      let imageUrl = getImgurImageUrl(fotoImgur?.trim());
+      if (!imageUrl) {
+        imageUrl = getGoogleDriveImageUrl(fotoUrl?.trim());
+      }
       return {
         id: (index + 1).toString(),
         nome: nome?.trim() || '',
         categoria: categoria?.trim() || '',
         ingredientes: ingredientes?.trim() || '',
         modoPreparo: modoPreparo?.trim() || '',
-        fotoUrl: fotoUrl?.trim() || undefined
+        fotoUrl: imageUrl
       };
     });
   } catch (error) {
