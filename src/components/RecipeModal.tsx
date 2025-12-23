@@ -1,4 +1,4 @@
-import { ChefHat } from "lucide-react";
+import { ChefHat, Expand } from "lucide-react";
 import { Recipe } from "@/data/recipes";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -21,19 +21,28 @@ const RecipeModal = ({ recipe, isOpen, onClose }: RecipeModalProps) => {
           <div className="relative">
             <div className="bg-muted relative overflow-hidden">
               {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt={recipe.nome}
-                  className="w-full h-auto object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              ) : null}
-              <div className="absolute inset-0 bg-sage/30 flex items-center justify-center">
-                <ChefHat className="w-16 h-16 text-foreground/20" />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+                <>
+                  <img
+                    src={imageUrl}
+                    alt={recipe.nome}
+                    className="w-full h-auto object-contain"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  <button
+                    onClick={() => window.open(imageUrl, '_blank')}
+                    className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                    title="Expandir imagem"
+                  >
+                    <Expand className="w-5 h-5" />
+                  </button>
+                </>
+              ) : (
+                <div className="absolute inset-0 bg-sage/30 flex items-center justify-center">
+                  <ChefHat className="w-16 h-16 text-foreground/20" />
+                </div>
+              )}
             </div>
           </div>
 
