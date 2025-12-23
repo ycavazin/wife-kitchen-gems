@@ -77,10 +77,7 @@ export async function fetchRecipes(): Promise<Recipe[]> {
     
     return dataLines.map((line, index) => {
       const [nome, categoria, ingredientes, modoPreparo, fotoUrl, fotoImgur] = line;
-      let imageUrl = getImgurImageUrl(fotoImgur?.trim());
-      if (!imageUrl) {
-        imageUrl = getGoogleDriveImageUrl(fotoUrl?.trim());
-      }
+      const imageUrl = getImgurImageUrl(fotoImgur?.trim());
       console.log('Recipe:', nome?.trim(), 'Image URL:', imageUrl);
       return {
         id: (index + 1).toString(),
