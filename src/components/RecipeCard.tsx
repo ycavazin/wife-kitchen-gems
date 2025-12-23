@@ -1,4 +1,5 @@
 import { Recipe } from "@/data/recipes";
+import { getGoogleDriveImageUrl } from "@/lib/utils/driveImage";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -10,6 +11,8 @@ const RecipeCard = ({ recipe, onClick }: RecipeCardProps) => {
     return null;
   }
 
+  const imageUrl = getGoogleDriveImageUrl(recipe.fotoUrl);
+
   return (
     <article
       onClick={onClick}
@@ -17,6 +20,18 @@ const RecipeCard = ({ recipe, onClick }: RecipeCardProps) => {
     >
       <div className="aspect-[4/3] bg-muted relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent z-10" />
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={recipe.nome}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+            onError={(e) => {
+              // Hide image on error and show fallback
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        ) : null}
         <div 
           className="absolute inset-0 bg-sage/30 flex items-center justify-center"
         >
